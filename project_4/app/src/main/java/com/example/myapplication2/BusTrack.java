@@ -1,11 +1,16 @@
 package com.example.myapplication2;
 
+import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,17 +24,65 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link BusTrack#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class BusTrack extends Fragment {
 
-public class OsmUsage extends AppCompatActivity {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
+
+    public BusTrack() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment BusTrack.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static BusTrack newInstance(String param1, String param2) {
+        BusTrack fragment = new BusTrack();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context ctx = getApplicationContext();
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view=inflater.inflate(R.layout.fragment_bus_track, container, false);
+        Context ctx = getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        setContentView(R.layout.activity_osm_usage);
-        map = (MapView) findViewById(R.id.map);
+
+        map = (MapView) view.findViewById(R.id.bus_track_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
         requestPermissionsIfNecessary(new String[]{
@@ -44,7 +97,10 @@ public class OsmUsage extends AppCompatActivity {
         mapController.setZoom(5.2);
         GeoPoint startPoint = new GeoPoint(23.72578763160967, 90.39059429730275);
         mapController.setCenter(startPoint);
+
+        return view;
     }
+
 
     @Override
     public void onResume() {
@@ -75,7 +131,7 @@ public class OsmUsage extends AppCompatActivity {
         }
         if (permissionsToRequest.size() > 0) {
             ActivityCompat.requestPermissions(
-                    this,
+                    getActivity(),
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
@@ -84,7 +140,7 @@ public class OsmUsage extends AppCompatActivity {
     private void requestPermissionsIfNecessary(String[] permissions) {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission)
+            if (ContextCompat.checkSelfPermission(getContext(), permission)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Permission is not granted
                 permissionsToRequest.add(permission);
@@ -92,7 +148,7 @@ public class OsmUsage extends AppCompatActivity {
         }
         if (permissionsToRequest.size() > 0) {
             ActivityCompat.requestPermissions(
-                    this,
+                    getActivity(),
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }

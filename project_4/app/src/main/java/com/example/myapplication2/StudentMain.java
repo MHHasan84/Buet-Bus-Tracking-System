@@ -18,7 +18,7 @@ public class StudentMain extends AppCompatActivity implements BottomNavigationVi
         setContentView(R.layout.activity_student_main);
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        loadFragment(new Notification());
+        loadFragment(new StudentHome());
     }
 
     @Override
@@ -31,6 +31,10 @@ public class StudentMain extends AppCompatActivity implements BottomNavigationVi
         }
         if(item.getItemId()==R.id.notification){
             loadFragment(new Notification());
+            return true;
+        }
+        if(item.getItemId()==R.id.track){
+            loadFragment(new BusTrack());
             return true;
         }
         return false;
