@@ -25,25 +25,15 @@ public class StudentMain extends AppCompatActivity implements BottomNavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
 
-
-        switch (item.getItemId()) {
-            case R.id.menu_home:
-                fragment=new StudentHome();
-                break;
-            case R.id.track:
-                break;
-            case R.id.notification:
-                fragment=new Notification();
-                break;
-            case R.id.contact:
-                break;
-            case R.id.profile:
-                break;
+        if(item.getItemId()==R.id.menu_home){
+            loadFragment(new StudentHome());
+            return true;
         }
-        if (fragment != null) {
-            loadFragment(fragment);
+        if(item.getItemId()==R.id.notification){
+            loadFragment(new Notification());
+            return true;
         }
-        return true;
+        return false;
     }
 
     void loadFragment(Fragment fragment) {
