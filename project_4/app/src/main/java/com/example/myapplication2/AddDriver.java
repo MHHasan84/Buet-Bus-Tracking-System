@@ -7,18 +7,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Spinner;
 
 public class AddDriver extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    private Spinner roleSelect;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_driver);
 
-        String[] ROLE = new String[] {"Driver", "Helper"};
+        roleSelect=findViewById(R.id.role_select);
+        roleSelect.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_add_driver, ROLE);
+        String[] roles = new String[] {"Driver", "Helper"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,roles);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        roleSelect.setAdapter(adapter);
+        roleSelect.setPrompt("Select Role");
     }
 
     @Override
@@ -28,6 +34,6 @@ public class AddDriver extends AppCompatActivity implements AdapterView.OnItemSe
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        roleSelect.setPrompt("Select Role");
     }
 }

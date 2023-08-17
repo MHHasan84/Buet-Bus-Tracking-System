@@ -19,6 +19,7 @@
             android:layout_marginTop="5dp">
 
             <TextView
+                android:id="@+id/nf_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -27,6 +28,7 @@
                 android:alpha="0.8"></TextView>
 
             <TextView
+                android:id="@+id/nf_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,6 +41,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/nf_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="All transportation service are called off
