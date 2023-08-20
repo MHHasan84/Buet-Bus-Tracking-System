@@ -3,7 +3,9 @@ package com.example.myapplication2.RetrofitLearning;
 import com.example.myapplication2.OpenWeather.DailyForecast;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -16,4 +18,7 @@ public interface DataServices {
 
     @GET("data/{id}/weather")
     Call<DailyForecast> getDailyForecast2(@Query("q") String city, @Query("APPID") String appid, @Path("id") int id);
+
+    @POST("users")
+    Call<DailyForecast> createWeather(@Body DailyForecast dailyForecast);
 }

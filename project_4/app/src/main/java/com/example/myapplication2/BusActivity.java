@@ -20,11 +20,11 @@ public class BusActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.busRecyclerView);
         busViewModelList=new ArrayList<>();
 
-        busViewModelList.add(new BusViewModel("Uttara",R.drawable.bus));
-        busViewModelList.add(new BusViewModel("Mirpur 1",R.drawable.bus));
-        busViewModelList.add(new BusViewModel("Biman Bandar",R.drawable.bus));
-        busViewModelList.add(new BusViewModel("Badda",R.drawable.bus));
-        busViewModelList.add(new BusViewModel("Sonir Akhra",R.drawable.bus));
+        busViewModelList.add(new BusViewModel("Uttara",R.drawable.bus_front));
+        busViewModelList.add(new BusViewModel("Mirpur 1",R.drawable.bus_front));
+        busViewModelList.add(new BusViewModel("Biman Bandar",R.drawable.bus_front));
+        busViewModelList.add(new BusViewModel("Badda",R.drawable.bus_front));
+        busViewModelList.add(new BusViewModel("Sonir Akhra",R.drawable.bus_front));
 
         BusViewAdapter busViewAdapter=new BusViewAdapter(busViewModelList,this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2);

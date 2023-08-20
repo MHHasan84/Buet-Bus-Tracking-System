@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,35 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.routing.GoogleRoadManager;
+import org.osmdroid.bonuspack.routing.GraphHopperRoadManager;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BusTrack#newInstance} factory method to
@@ -42,6 +60,8 @@ public class BusTrack extends Fragment {
 
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
+
+    private static final String agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203";
 
     public BusTrack() {
         // Required empty public constructor
@@ -82,6 +102,9 @@ public class BusTrack extends Fragment {
         Context ctx = getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         map = (MapView) view.findViewById(R.id.bus_track_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
@@ -94,9 +117,49 @@ public class BusTrack extends Fragment {
         map.setMultiTouchControls(true);
 
         IMapController mapController = map.getController();
-        mapController.setZoom(5.2);
-        GeoPoint startPoint = new GeoPoint(23.72578763160967, 90.39059429730275);
+        mapController.setZoom(16.7);
+
+        GeoPoint startPoint = new GeoPoint(23.72578763160967d, 90.39059429730275d);
         mapController.setCenter(startPoint);
+
+        GeoPoint gPt0 = new GeoPoint(23.72578763160967d, 90.39059429730275d);
+        GeoPoint gPt1 = new GeoPoint(23.74578763160967d, 90.39259429730275d);
+        ArrayList<GeoPoint> line=new ArrayList<>();
+        line .add(gPt0);
+        line .add(gPt1);
+
+        String userAgent = BuildConfig.APPLICATION_ID+"/"+BuildConfig.VERSION_NAME;
+
+        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
+
+        Road road = roadManager.getRoad(line);
+        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+
+        map.getOverlays().add(roadOverlay);
+
+        map.invalidate();
+
+//        List<Track> trackList=getAllTrack();
+//
+//        Track startTrack= trackList.get(0);
+//        GeoPoint startPoint=new GeoPoint(startTrack.getLatitude(),startTrack.getLongitude());
+//        mapController.setCenter(startPoint);
+//
+//        ArrayList<GeoPoint> line=new ArrayList<>();
+//        for(int i=1;i< trackList.size();i++){
+//            Track track=trackList.get(i);
+//            GeoPoint geoPoint=new GeoPoint(track.getLatitude(),track.getLongitude());
+//            line.add(geoPoint);
+//        }
+//
+//        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
+//
+//        Road road = roadManager.getRoad(line);
+//        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+//
+//        map.getOverlays().add(roadOverlay);
+//
+//        map.invalidate();
 
         return view;
     }
@@ -152,5 +215,31 @@ public class BusTrack extends Fragment {
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
+    }
+
+    private List<Track> getAllTrack(){
+        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
+        DataService dataService=retrofit.create(DataService.class);
+
+        Call<List<Track>> trackCall=dataService.getAllTrack();
+
+        final List<Track>[] trackList = new List[]{null};
+
+        trackCall.enqueue(new Callback<List<Track>>() {
+            @Override
+            public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
+                if(response.isSuccessful()){
+                    trackList[0] =response.body();
+                    Toast.makeText(getContext(),"retrieve successfully",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Track>> call, Throwable t) {
+
+            }
+        });
+
+        return trackList[0];
     }
 }

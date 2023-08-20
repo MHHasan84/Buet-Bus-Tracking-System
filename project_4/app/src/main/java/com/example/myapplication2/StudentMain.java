@@ -37,6 +37,14 @@ public class StudentMain extends AppCompatActivity implements BottomNavigationVi
             loadFragment(new BusTrack());
             return true;
         }
+        if(item.getItemId()==R.id.profile){
+            loadFragment(new StudentProfile());
+            return true;
+        }
+        if(item.getItemId()==R.id.contact){
+            loadFragment(new ContactFragment());
+            return true;
+        }
         return false;
     }
 

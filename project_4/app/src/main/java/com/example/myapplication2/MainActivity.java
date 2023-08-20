@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button adminButton=(Button) findViewById(R.id.adminbtn);
         Button userButton=findViewById(R.id.userbtn);
+        TextView createAccountTv=findViewById(R.id.create_account_tv);
 
         userButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(MainActivity.this,AdminLogin.class);
+                startActivity(intent);
+            }
+        });
+
+        createAccountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,UserSignUp.class);
                 startActivity(intent);
             }
         });
