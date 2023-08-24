@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BusActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All Buses"
+        android:background="@color/buet"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:paddingVertical="5dp"
+        android:textColor="@android:color/white"></TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/busRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"></androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
