@@ -14,8 +14,8 @@ public class AdminHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home_page);
 
-        ImageView busesImage=findViewById(R.id.buses);
-        ImageView addBusImage=findViewById(R.id.add_bus);
+        ImageView busesImage=findViewById(R.id.bus);
+        ImageView addBusImage=findViewById(R.id.route);
 
         busesImage.setOnClickListener(new View.OnClickListener() {
             @Override

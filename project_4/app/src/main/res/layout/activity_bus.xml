@@ -7,6 +7,8 @@
     tools:context=".BusActivity"
     android:orientation="vertical">
 
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +19,15 @@
         android:layout_margin="10dp"
         android:paddingVertical="5dp"
         android:textColor="@android:color/white"></TextView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+ Add Bus"
+        android:backgroundTint="@color/buet"
+        android:textSize="20dp"
+        android:layout_margin="10dp">
+    </Button>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/busRecyclerView"
