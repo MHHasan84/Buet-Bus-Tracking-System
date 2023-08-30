@@ -27,7 +27,4 @@ public interface DataService {
 
     @POST("auth/signout")
     Call<Signout> signOut();
-
-    @GET("bus")
-    Call<List<TestLocalhostBus>> getAllBus();
 }

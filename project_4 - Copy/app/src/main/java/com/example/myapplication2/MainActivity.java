@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
         Button userButton=findViewById(R.id.userbtn);
         TextView createAccountTv=findViewById(R.id.create_account_tv);
 
-        TextView err=findViewById(R.id.errTv);
-
 //        userButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -35,32 +31,12 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
-        DataService dataService=retrofit.create(DataService.class);
+
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent=new Intent(MainActivity.this,AdminLogin.class);
-//                startActivity(intent);
-                Call<List<TestLocalhostBus>> call=dataService.getAllBus();
-                call.enqueue(new Callback<List<TestLocalhostBus>>() {
-                    @Override
-                    public void onResponse(Call<List<TestLocalhostBus>> call, Response<List<TestLocalhostBus>> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
-                            err.setText(response.body().get(0).getBusname());
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<TestLocalhostBus>> call, Throwable t) {
-                        //Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_SHORT).show();
-                        err.setText(t.toString());
-                    }
-                });
+                Intent intent=new Intent(MainActivity.this,AdminLogin.class);
+                startActivity(intent);
             }
         });
 
@@ -73,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
-//        DataService dataService=retrofit.create(DataService.class);
+        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
+        DataService dataService=retrofit.create(DataService.class);
 
 //        Call<Signout> call=dataService.signOut();
 //        call.enqueue(new Callback<Signout>() {
@@ -94,28 +70,28 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        User user=new User();
-//        user.setUsername("toufikhasan");
-//        user.setPassword("123456");
-//
-//        Call<User> call=dataService.signIn(user);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if(response.isSuccessful()){
-//                    User user1=response.body();
-//                    Toast.makeText(getApplicationContext(),user1.getUsername(),Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        User user=new User();
+        user.setUsername("toufikhasan");
+        user.setPassword("123456");
+
+        Call<User> call=dataService.signIn(user);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    User user1=response.body();
+                    Toast.makeText(getApplicationContext(),user1.getUsername(),Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 //        Call<TestBus> call2=dataService.getTestBus(1);

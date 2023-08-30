@@ -36,4 +36,12 @@
         android:textColor="@color/buet">
     </TextView>
 
+    <TextView
+        android:id="@+id/errTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="error"
+        android:textSize="20dp">
+    </TextView>
+
 </LinearLayout>

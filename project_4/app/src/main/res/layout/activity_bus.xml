@@ -20,14 +20,14 @@
         android:paddingVertical="5dp"
         android:textColor="@android:color/white"></TextView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+ Add Bus"
-        android:backgroundTint="@color/buet"
-        android:textSize="20dp"
-        android:layout_margin="10dp">
-    </Button>
+    <ImageView
+        android:id="@+id/add_bus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/add"
+        android:layout_margin="10dp"
+        android:layout_gravity="right">
+    </ImageView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/busRecyclerView"
