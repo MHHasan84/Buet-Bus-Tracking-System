@@ -15,29 +15,27 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RepositoryBus {
-    static Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
-    static BusService busService=retrofit.create(BusService.class);
-    public static String addBus(ModelBus modelBus){
-        StringBuilder responseMsg=new StringBuilder();
+    private Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+    private BusService busService=retrofit.create(BusService.class);
+    public List<ModelBus> addBus(ModelBus modelBus){
+        List<ModelBus> modelBusList=new ArrayList<>();
         Call<ModelBus> call= busService.addBus(modelBus);
         call.enqueue(new Callback<ModelBus>() {
             @Override
             public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
                 if(response.isSuccessful()){
-                    responseMsg.append("bus added successfully");
+                    modelBusList.add(response.body());
                 }
-                else{
-                    responseMsg.append("bus is not added successfully");
-                }
+
             }
             @Override
             public void onFailure(Call<ModelBus> call, Throwable t) {
-                responseMsg.append("bus addition failed");
+
             }
         });
-        return responseMsg.toString();
+        return modelBusList;
     }
-    public static List<ModelBus> getAllBus(){
+    public List<ModelBus> getAllBus(){
         List<ModelBus> modelBusList=new ArrayList<>();
         Call<List<ModelBus>> call= busService.getAllBus();
         call.enqueue(new Callback<List<ModelBus>>() {
@@ -55,7 +53,7 @@ public class RepositoryBus {
         });
         return modelBusList;
     }
-    public static List<ModelBus> getBus(int busId){
+    public List<ModelBus> getBus(int busId){
         List<ModelBus> modelBusList=new ArrayList<>();
         Call<ModelBus> call= busService.getBus(busId);
         call.enqueue(new Callback<ModelBus>() {
@@ -73,10 +71,38 @@ public class RepositoryBus {
         });
         return modelBusList;
     }
-    public static boolean editBus(ModelBus modelBus){
-        return false;
+    public List<ModelBus> editBus(ModelBus modelBus){
+        List<ModelBus> modelBusList=new ArrayList<>();
+        Call<ModelBus> call= busService.editBus(modelBus, modelBus.getBusId());
+        call.enqueue(new Callback<ModelBus>() {
+            @Override
+            public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
+                if(response.isSuccessful()){
+                    modelBusList.add(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBus> call, Throwable t) {
+
+            }
+        });
+        return modelBusList;
     }
-    public static boolean deleteBus(int busId){
-        return false;
+    public void deleteBus(int busId){
+        Call<Void> call= busService.deleteBus(busId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 }

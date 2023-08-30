@@ -18,7 +18,7 @@ public interface RouteService {
     Call<List<ModelRoute>> getAllRoute();
     @GET("route/{id}")
     Call<ModelRoute> getRoute(@Path("id") int routeId);
-    @POST("bus")
+    @POST("route")
     Call<ModelRoute> addRoute(@Body ModelRoute modelRoute);
     @PUT("route/{id}")
     Call<ModelRoute> editRoute(@Body ModelRoute modelRoute,@Path("id") int routeId);

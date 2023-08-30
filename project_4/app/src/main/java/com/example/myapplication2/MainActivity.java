@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView err=findViewById(R.id.errTv);
 
+        System.out.println("Hasan");
+
 //        userButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
