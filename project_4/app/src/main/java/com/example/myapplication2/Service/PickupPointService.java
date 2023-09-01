@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 
 public interface PickupPointService {
     @GET("pickup-point/{id}")
-    Call<List<ModelPickupPoint>> getAllPickupPoint(int routeId);
+    Call<List<ModelPickupPoint>> getAllPickupPoint(@Path("id") int routeId);
     @POST("pickup-point")
     Call<ModelPickupPoint> addPickupPoint(@Body ModelPickupPoint modelPickupPoint);
     @PUT("pickup-point/{id}")

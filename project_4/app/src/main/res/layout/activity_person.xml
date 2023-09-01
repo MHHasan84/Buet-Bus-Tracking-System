@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Route"
+    tools:context=".Person"
     android:orientation="vertical">
-
-
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Routes"
+        android:text="Person"
         android:textSize="30dp"
         android:background="@color/buet"
         android:textColor="@color/white"
@@ -20,7 +18,7 @@
     </TextView>
 
     <ImageView
-        android:id="@+id/add_route"
+        android:id="@+id/add_person_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/add"
@@ -29,7 +27,7 @@
     </ImageView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/roure_recycler_view"
+        android:id="@+id/person_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>

@@ -42,27 +42,27 @@ public class MainActivity extends AppCompatActivity {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent=new Intent(MainActivity.this,AdminLogin.class);
-//                startActivity(intent);
-                Call<List<TestLocalhostBus>> call=dataService.getAllBus();
-                call.enqueue(new Callback<List<TestLocalhostBus>>() {
-                    @Override
-                    public void onResponse(Call<List<TestLocalhostBus>> call, Response<List<TestLocalhostBus>> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
-                            err.setText(response.body().get(0).getBusname());
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<TestLocalhostBus>> call, Throwable t) {
-                        //Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_SHORT).show();
-                        err.setText(t.toString());
-                    }
-                });
+                Intent intent=new Intent(MainActivity.this,AdminLogin.class);
+                startActivity(intent);
+//                Call<List<TestLocalhostBus>> call=dataService.getAllBus();
+//                call.enqueue(new Callback<List<TestLocalhostBus>>() {
+//                    @Override
+//                    public void onResponse(Call<List<TestLocalhostBus>> call, Response<List<TestLocalhostBus>> response) {
+//                        if(response.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+//                            err.setText(response.body().get(0).getBusname());
+//                        }
+//                        else{
+//                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<TestLocalhostBus>> call, Throwable t) {
+//                        //Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_SHORT).show();
+//                        err.setText(t.toString());
+//                    }
+//                });
             }
         });
 

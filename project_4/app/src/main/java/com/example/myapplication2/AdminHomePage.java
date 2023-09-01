@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.myapplication2.Model.ModelBus;
+import com.example.myapplication2.Repository.RepositoryBus;
+
+import java.util.List;
+
 public class AdminHomePage extends AppCompatActivity {
 
     @Override
@@ -15,7 +20,8 @@ public class AdminHomePage extends AppCompatActivity {
         setContentView(R.layout.activity_admin_home_page);
 
         ImageView busesImage=findViewById(R.id.bus);
-        ImageView addBusImage=findViewById(R.id.route);
+        ImageView routeImage=findViewById(R.id.route);
+
 
         busesImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,10 +31,10 @@ public class AdminHomePage extends AppCompatActivity {
             }
         });
 
-        addBusImage.setOnClickListener(new View.OnClickListener() {
+        routeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(AdminHomePage.this, AddBus.class);
+                Intent intent=new Intent(AdminHomePage.this,Route.class);
                 startActivity(intent);
             }
         });

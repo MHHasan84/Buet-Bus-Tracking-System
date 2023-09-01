@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/shadow"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="2dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
+
+        <TextView
+            android:id="@+id/person_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Md Kalam Mia"
+            android:layout_alignParentLeft="true"
+            android:textSize="18dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/person_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Driver"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:textColor="@color/buet">
+        </TextView>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
