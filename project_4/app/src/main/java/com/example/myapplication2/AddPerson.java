@@ -12,9 +12,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication2.Model.ModelBus;
 import com.example.myapplication2.Model.ModelBusPerson;
 import com.example.myapplication2.Network.RetrofitInstance;
 import com.example.myapplication2.Service.BusPersonService;
+import com.example.myapplication2.Service.BusService;
 import com.example.myapplication2.Service.RouteService;
 
 import retrofit2.Call;
@@ -31,12 +33,16 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
     EditText personNidEt;
     Button personConfirmBtn;
     Button personCancelBtn;
-    String[] types={"Driver","Helper"};
+    String[] types={"driver","helper"};
     String personType="";
+    int personId;
+    ArrayAdapter ad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_person);
+
+        String operation=getIntent().getStringExtra("operation");
 
         addPersonTopTv=findViewById(R.id.add_person_top_tv);
         personNameEt=findViewById(R.id.person_name_et);
@@ -49,9 +55,15 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
 
         personTypeSpn.setOnItemSelectedListener(this);
 
-        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, types);
+        ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, types);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         personTypeSpn.setAdapter(ad);
+
+        if(operation.equals("edit")){
+            personId=getIntent().getIntExtra("personId",1);
+            //Toast.makeText(getApplicationContext(),busId+"",Toast.LENGTH_SHORT).show();
+            methodForEdit(personId);
+        }
 
         personConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,24 +78,47 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
                 Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
                 BusPersonService busPersonService=retrofit.create(BusPersonService.class);
 
-                Call<ModelBusPerson> call=busPersonService.addPerson(modelBusPerson);
+                if(operation.equals("add")){
+                    Call<ModelBusPerson> call=busPersonService.addPerson(modelBusPerson);
 
-                call.enqueue(new Callback<ModelBusPerson>() {
-                    @Override
-                    public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                    call.enqueue(new Callback<ModelBusPerson>() {
+                        @Override
+                        public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ModelBusPerson> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ModelBusPerson> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                else if(operation.equals("edit")){
+                    Call<ModelBusPerson> call=busPersonService.editBusPerson(modelBusPerson,personId);
+
+                    call.enqueue(new Callback<ModelBusPerson>() {
+                        @Override
+                        public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelBusPerson> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -95,6 +130,34 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    void methodForEdit(int personId){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        BusPersonService busPersonService=retrofit.create(BusPersonService.class);
+
+        Call<ModelBusPerson> call=busPersonService.getPerson(personId);
+
+        call.enqueue(new Callback<ModelBusPerson>() {
+            @Override
+            public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
+                if(response.isSuccessful()){
+                    ModelBusPerson modelBusPerson=response.body();
+                    personNameEt.setText(modelBusPerson.getName());
+                    personContactNoEt.setText(modelBusPerson.getContactNumber());
+                    int spinnerPosition = ad.getPosition(modelBusPerson.getBusPersonType());
+                    personTypeSpn.setSelection(spinnerPosition);
+                    personDrivingLicenseEt.setText(modelBusPerson.getDrivingLicenseNo());
+                    personNidEt.setText(modelBusPerson.getNidNo());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBusPerson> call, Throwable t) {
+
+            }
+        });
 
     }
 }

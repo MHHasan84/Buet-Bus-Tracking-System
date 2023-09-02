@@ -67,7 +67,9 @@ public class Person extends AppCompatActivity {
         addPersonIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddPerson.class));
+                Intent intent=new Intent(getApplicationContext(), AddPerson.class);
+                intent.putExtra("operation","add");
+                startActivity(intent);
             }
         });
     }

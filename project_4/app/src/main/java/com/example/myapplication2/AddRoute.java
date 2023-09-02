@@ -22,6 +22,7 @@ import retrofit2.Retrofit;
 public class AddRoute extends AppCompatActivity {
     EditText routeNameEditText;
     Button addRouteConformBtn;
+    int routeId=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,14 @@ public class AddRoute extends AppCompatActivity {
 
         routeNameEditText=findViewById(R.id.route_name_edit_text);
         addRouteConformBtn=findViewById(R.id.add_route_confirm_btn);
+
+        String operation=getIntent().getStringExtra("operation");
+
+        if(operation.equals("edit")){
+            routeId=getIntent().getIntExtra("routeId",1);
+            String routeName=getIntent().getStringExtra("routeName");
+            routeNameEditText.setText(routeName);
+        }
 
         addRouteConformBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,24 +48,46 @@ public class AddRoute extends AppCompatActivity {
                 String routeName=routeNameEditText.getText().toString();
                 ModelRoute modelRoute=new ModelRoute();
                 modelRoute.setRouteName(routeName);
-                Call<ModelRoute> call=routeService.addRoute(modelRoute);
-                call.enqueue(new Callback<ModelRoute>() {
-                    @Override
-                    public void onResponse(Call<ModelRoute> call, Response<ModelRoute> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                if(operation.equals("add")){
+                    Call<ModelRoute> call=routeService.addRoute(modelRoute);
+                    call.enqueue(new Callback<ModelRoute>() {
+                        @Override
+                        public void onResponse(Call<ModelRoute> call, Response<ModelRoute> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ModelRoute> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ModelRoute> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else if(operation.equals("edit")){
+                    Call<ModelRoute> call=routeService.editRoute(modelRoute,routeId);
+                    call.enqueue(new Callback<ModelRoute>() {
+                        @Override
+                        public void onResponse(Call<ModelRoute> call, Response<ModelRoute> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelRoute> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
+
 }

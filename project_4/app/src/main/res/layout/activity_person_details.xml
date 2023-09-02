@@ -127,4 +127,30 @@
         </TextView>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp">
+
+        <Button
+            android:id="@+id/edit_person_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="@color/buet"></Button>
+
+        <Button
+            android:id="@+id/delete_person_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="@color/buet"></Button>
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -65,7 +65,9 @@ public class Route extends AppCompatActivity {
         addRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddRoute.class));
+                Intent intent=new Intent(getApplicationContext(), AddRoute.class);
+                intent.putExtra("operation","add");
+                startActivity(intent);
             }
         });
 
