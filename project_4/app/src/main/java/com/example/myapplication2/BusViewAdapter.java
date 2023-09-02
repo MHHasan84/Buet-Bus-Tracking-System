@@ -36,7 +36,8 @@ public class BusViewAdapter extends RecyclerView.Adapter<BusViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context,Schedule.class);
+                Intent intent=new Intent(context, BusDetails.class);
+                //intent.putExtra("busId",)
                 context.startActivity(intent);
             }
         });

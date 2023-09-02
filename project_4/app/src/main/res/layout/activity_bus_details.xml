@@ -140,7 +140,7 @@
             android:textSize="20dp">
         </TextView>
         <TextView
-            android:id="@+id/helper_name_tv_tv"
+            android:id="@+id/helper_name_tv"
             android:layout_weight="0.4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
         android:layout_marginTop="100dp">
 
         <Button
-            android:id="@+id/add_bus_confirm_btn"
+            android:id="@+id/edit_bus_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit"
@@ -165,7 +165,7 @@
             android:backgroundTint="@color/buet"></Button>
 
         <Button
-            android:id="@+id/add_bus_cancel_btn"
+            android:id="@+id/delete_bus_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete"
