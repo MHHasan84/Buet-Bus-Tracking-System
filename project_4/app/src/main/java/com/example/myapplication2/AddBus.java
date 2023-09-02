@@ -50,10 +50,17 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
     String busType;
     int routeId,driverId,helperId;
 
+    int busId=1;
+
+    ArrayAdapter busTypeAdapter,routeAdapter,driverAdapter,helperAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bus);
+
+        String operation=getIntent().getStringExtra("operation");
+
 
         busNumberEt=findViewById(R.id.bus_number_et);
         busNameEt=findViewById(R.id.bus_name_et);
@@ -70,7 +77,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
         driverSpn.setOnItemSelectedListener(this);
         helperSpn.setOnItemSelectedListener(this);
 
-        ArrayAdapter busTypeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, busTypes);
+        busTypeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, busTypes);
         busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         busTypeSpn.setAdapter(busTypeAdapter);
 //
@@ -130,6 +137,12 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
             }
         });
 
+        if(operation.equals("edit")){
+            busId=getIntent().getIntExtra("busId",1);
+            //Toast.makeText(getApplicationContext(),busId+"",Toast.LENGTH_SHORT).show();
+            methodForEdit(busId);
+        }
+
         addBusConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,23 +154,46 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
                 modelBus.setDriverId(driverId);
                 modelBus.setHelperId(helperId);
 
-                Call<ModelBus> busCall=busService.addBus(modelBus);
-                busCall.enqueue(new Callback<ModelBus>() {
-                    @Override
-                    public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                if(operation.equals("add")){
+                    Call<ModelBus> busCall=busService.addBus(modelBus);
+                    busCall.enqueue(new Callback<ModelBus>() {
+                        @Override
+                        public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ModelBus> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ModelBus> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                else if(operation.equals("edit")){
+                    Call<ModelBus> busCall=busService.editBus(modelBus,busId);
+                    busCall.enqueue(new Callback<ModelBus>() {
+                        @Override
+                        public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
+                            if(response.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ModelBus> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         });
     }
@@ -166,7 +202,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
         for(ModelRoute modelRoute:modelRouteList){
             this.routeList.add(modelRoute.getRouteName());
         }
-        ArrayAdapter routeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.routeList);
+        routeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.routeList);
         routeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         routeSpn.setAdapter(routeAdapter);
 
@@ -177,7 +213,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
         for(ModelBusPerson modelBusPerson:driverList){
             this.driverList.add(modelBusPerson.getName());
         }
-        ArrayAdapter driverAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.driverList);
+        driverAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.driverList);
         driverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         driverSpn.setAdapter(driverAdapter);
 
@@ -188,7 +224,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
         for(ModelBusPerson modelBusPerson:helperList){
             this.helperList.add(modelBusPerson.getName());
         }
-        ArrayAdapter helperAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.helperList);
+        helperAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.helperList);
         helperAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         helperSpn.setAdapter(helperAdapter);
 
@@ -214,5 +250,99 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+
+    void methodForEdit(int busId){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        BusService busService=retrofit.create(BusService.class);
+
+        Call<ModelBus> call=busService.getBus(busId);
+
+        call.enqueue(new Callback<ModelBus>() {
+            @Override
+            public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
+                if(response.isSuccessful()){
+                    ModelBus modelBus= response.body();
+                    busNumberEt.setText(modelBus.getBusNumber());
+                    busNameEt.setText(modelBus.getBusName());
+                    setBusType(modelBus.getBusType());
+                    setRouteName(modelBus.getRouteId());
+                    setDriverName(modelBus.getDriverId());
+                    setHelperName(modelBus.getHelperId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBus> call, Throwable t) {
+
+            }
+        });
+    }
+
+    void setBusType(String busType){
+        int spinnerPosition = busTypeAdapter.getPosition(busType);
+        busTypeSpn.setSelection(spinnerPosition);
+    }
+
+    void setRouteName(int routeId){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        RouteService routeService=retrofit.create(RouteService.class);
+        Call<ModelRoute> call=routeService.getRoute(routeId);
+        call.enqueue(new Callback<ModelRoute>() {
+            @Override
+            public void onResponse(Call<ModelRoute> call, Response<ModelRoute> response) {
+                if(response.isSuccessful()){
+                    ModelRoute modelRoute=response.body();
+                    int spinnerPosition = routeAdapter.getPosition(modelRoute.getRouteName());
+                    routeSpn.setSelection(spinnerPosition);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelRoute> call, Throwable t) {
+
+            }
+        });
+    }
+    void setDriverName(int driverId){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        BusPersonService busPersonService=retrofit.create(BusPersonService.class);
+        Call<ModelBusPerson> call=busPersonService.getPerson(driverId);
+        call.enqueue(new Callback<ModelBusPerson>() {
+            @Override
+            public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
+                if(response.isSuccessful()){
+                    ModelBusPerson modelBusPerson=response.body();
+                    int spinnerPosition = driverAdapter.getPosition(modelBusPerson.getName());
+                    driverSpn.setSelection(spinnerPosition);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBusPerson> call, Throwable t) {
+
+            }
+        });
+    }
+    void setHelperName(int helperId){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        BusPersonService busPersonService=retrofit.create(BusPersonService.class);
+        Call<ModelBusPerson> call=busPersonService.getPerson(helperId);
+        call.enqueue(new Callback<ModelBusPerson>() {
+            @Override
+            public void onResponse(Call<ModelBusPerson> call, Response<ModelBusPerson> response) {
+                if(response.isSuccessful()){
+                    ModelBusPerson modelBusPerson=response.body();
+                    int spinnerPosition = helperAdapter.getPosition(modelBusPerson.getName());
+                    helperSpn.setSelection(spinnerPosition);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelBusPerson> call, Throwable t) {
+
+            }
+        });
     }
 }

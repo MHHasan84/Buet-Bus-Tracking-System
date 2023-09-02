@@ -9,13 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication2.Model.ModelBus;
+
 import java.util.List;
 
 public class BusViewAdapter extends RecyclerView.Adapter<BusViewHolder> {
-    private List<BusViewModel> busViewModelList;
+    private List<ModelBus> busViewModelList;
     private Context context;
 
-    public BusViewAdapter(List<BusViewModel> busViewModelList, Context context) {
+    public BusViewAdapter(List<ModelBus> busViewModelList, Context context) {
         this.busViewModelList = busViewModelList;
         this.context = context;
     }
@@ -29,15 +31,15 @@ public class BusViewAdapter extends RecyclerView.Adapter<BusViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BusViewHolder holder, int position) {
-        BusViewModel busViewModel=busViewModelList.get(position);
-        holder.busRoute.setText(busViewModel.getRoute());
-        holder.busImage.setImageResource(busViewModel.getImgId());
+        ModelBus busViewModel=busViewModelList.get(position);
+        holder.busRoute.setText(busViewModel.getBusName());
+        holder.busImage.setImageResource(R.drawable.bus_front);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context, BusDetails.class);
-                //intent.putExtra("busId",)
+                intent.putExtra("busId",busViewModel.getBusId());
                 context.startActivity(intent);
             }
         });

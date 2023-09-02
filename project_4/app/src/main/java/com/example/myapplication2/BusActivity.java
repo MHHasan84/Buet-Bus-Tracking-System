@@ -28,7 +28,6 @@ import retrofit2.Retrofit;
 
 public class BusActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<BusViewModel> busViewModelList;
     ImageView addBus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class BusActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.busRecyclerView);
         addBus=findViewById(R.id.add_bus);
 
-        busViewModelList=new ArrayList<>();
 
         Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
         BusService busService=retrofit.create(BusService.class);
@@ -50,16 +48,9 @@ public class BusActivity extends AppCompatActivity {
             public void onResponse(Call<List<ModelBus>> call, Response<List<ModelBus>> response) {
                 if(response.isSuccessful()){
                     modelBusList.addAll(response.body());
-                    for(ModelBus modelBus:modelBusList){
-                        busViewModelList.add(new BusViewModel(modelBus.getBusName(),R.drawable.bus_front));
-                        //foo(modelBus.getBusName());
-                    }
 
-                    BusViewAdapter busViewAdapter=new BusViewAdapter(busViewModelList,getApplicationContext());
-                    GridLayoutManager gridLayoutManager=new GridLayoutManager(getApplicationContext(),2);
+                    foo(modelBusList);
 
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(busViewAdapter);
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
@@ -76,7 +67,9 @@ public class BusActivity extends AppCompatActivity {
         addBus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AddBus.class));
+                Intent intent=new Intent(getApplicationContext(), AddBus.class);
+                intent.putExtra("operation","add");
+                startActivity(intent);
             }
         });
 
@@ -86,7 +79,11 @@ public class BusActivity extends AppCompatActivity {
 
     }
 
-    void foo(String x){
-        Toast.makeText(getApplicationContext(),x,Toast.LENGTH_SHORT).show();
+    void foo(List<ModelBus> modelBusList){
+        BusViewAdapter busViewAdapter=new BusViewAdapter(modelBusList,this);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2);
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(busViewAdapter);
     }
 }
