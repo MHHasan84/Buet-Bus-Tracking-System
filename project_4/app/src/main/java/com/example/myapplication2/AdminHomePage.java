@@ -21,6 +21,7 @@ public class AdminHomePage extends AppCompatActivity {
 
         ImageView busesImage=findViewById(R.id.bus);
         ImageView routeImage=findViewById(R.id.route);
+        ImageView personImage=findViewById(R.id.person);
 
 
         busesImage.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +36,14 @@ public class AdminHomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(AdminHomePage.this,Route.class);
+                startActivity(intent);
+            }
+        });
+
+        personImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(AdminHomePage.this,Person.class);
                 startActivity(intent);
             }
         });

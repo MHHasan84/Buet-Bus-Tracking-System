@@ -32,43 +32,43 @@
         >
 
         <EditText
+            android:id="@+id/bus_number_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="New Bus Name"
+            android:hint="Bus Number"
             android:layout_marginVertical="10dp"></EditText>
 
         <EditText
+            android:id="@+id/bus_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="New Bus Number"
+            android:hint="Bus Name"
             android:layout_marginVertical="10dp"></EditText>
 
         <Spinner
-            android:id="@+id/driver_spinner"
+            android:id="@+id/bus_type_spn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:spinnerMode="dialog"
             ></Spinner>
 
         <Spinner
-            android:id="@+id/helper_spinner"
+            android:id="@+id/route_spn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"></Spinner>
 
         <Spinner
-            android:id="@+id/route_spinner"
+            android:id="@+id/driver_spn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"></Spinner>
 
-        <EditText
+        <Spinner
+            android:id="@+id/helper_spn"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Date for Activating"
-            android:layout_marginVertical="10dp"></EditText>
-
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"></Spinner>
 
 
     </LinearLayout>
@@ -80,6 +80,7 @@
         android:layout_marginTop="100dp">
 
         <Button
+            android:id="@+id/add_bus_confirm_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add"
@@ -88,6 +89,7 @@
             android:backgroundTint="@color/buet"></Button>
 
         <Button
+            android:id="@+id/add_bus_cancel_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel"

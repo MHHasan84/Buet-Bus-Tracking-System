@@ -14,6 +14,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface BusPersonService {
+    @GET("person")
+    Call<List<ModelBusPerson>> getAllPerson();
     @GET("driver")
     Call<List<ModelBusPerson>> getAllDriver();
     @GET("helper")

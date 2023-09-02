@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapplication2.Model.ModelBus;
@@ -26,12 +29,15 @@ import retrofit2.Retrofit;
 public class BusActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<BusViewModel> busViewModelList;
+    ImageView addBus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus);
 
         recyclerView=findViewById(R.id.busRecyclerView);
+        addBus=findViewById(R.id.add_bus);
+
         busViewModelList=new ArrayList<>();
 
         Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
@@ -46,7 +52,7 @@ public class BusActivity extends AppCompatActivity {
                     modelBusList.addAll(response.body());
                     for(ModelBus modelBus:modelBusList){
                         busViewModelList.add(new BusViewModel(modelBus.getBusName(),R.drawable.bus_front));
-                        foo(modelBus.getBusName());
+                        //foo(modelBus.getBusName());
                     }
 
                     BusViewAdapter busViewAdapter=new BusViewAdapter(busViewModelList,getApplicationContext());
@@ -63,6 +69,14 @@ public class BusActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<ModelBus>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        addBus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddBus.class));
             }
         });
 

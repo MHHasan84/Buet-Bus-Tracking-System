@@ -28,14 +28,14 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonHolder> {
         Context context=parent.getContext();
         LayoutInflater inflater=LayoutInflater.from(context);
 
-        View personView=inflater.inflate(R.layout.route_view,parent,false);
+        View personView=inflater.inflate(R.layout.person_view,parent,false);
         PersonHolder personHolder=new PersonHolder(personView);
         return personHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull PersonHolder holder, int position) {
-        int index=holder.getAdapterPosition();
+//        int index=holder.getAdapterPosition();
         int personId=personList.get(position).getBusPersonId();
         holder.personNameTv.setText(personList.get(position).getName());
         holder.personTypeTv.setText(personList.get(position).getBusPersonType());
