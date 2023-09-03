@@ -94,6 +94,7 @@ public class PersonDetails extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.isSuccessful()){
+                            changeActivity();
                             Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -105,5 +106,15 @@ public class PersonDetails extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    void changeActivity(){
+        startActivity(new Intent(this, Person.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        changeActivity();
     }
 }

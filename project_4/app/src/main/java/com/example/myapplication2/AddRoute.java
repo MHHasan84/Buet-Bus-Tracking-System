@@ -2,10 +2,12 @@ package com.example.myapplication2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.Model.ModelRoute;
@@ -22,6 +24,8 @@ import retrofit2.Retrofit;
 public class AddRoute extends AppCompatActivity {
     EditText routeNameEditText;
     Button addRouteConformBtn;
+    Button addRouteCancelBtn;
+    TextView addRouteTopTv;
     int routeId=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +34,13 @@ public class AddRoute extends AppCompatActivity {
 
         routeNameEditText=findViewById(R.id.route_name_edit_text);
         addRouteConformBtn=findViewById(R.id.add_route_confirm_btn);
+        addRouteTopTv=findViewById(R.id.add_route_top_tv);
+        addRouteCancelBtn=findViewById(R.id.add_route_cancel_btn);
 
         String operation=getIntent().getStringExtra("operation");
 
         if(operation.equals("edit")){
+            addRouteTopTv.setText("Edit Route");
             routeId=getIntent().getIntExtra("routeId",1);
             String routeName=getIntent().getStringExtra("routeName");
             routeNameEditText.setText(routeName);
@@ -86,8 +93,26 @@ public class AddRoute extends AppCompatActivity {
                         }
                     });
                 }
+
+                changeActivity();
+            }
+        });
+
+        addRouteCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeActivity();
             }
         });
     }
 
+    void changeActivity(){
+        startActivity(new Intent(this, Route.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        changeActivity();
+    }
 }

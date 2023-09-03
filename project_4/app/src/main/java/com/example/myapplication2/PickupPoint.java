@@ -50,13 +50,9 @@ public class PickupPoint extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ModelPickupPoint>> call, Response<List<ModelPickupPoint>> response) {
                 if(response.isSuccessful()){
-                    list.addAll(response.body());
+                    //list.addAll(response.body());
                     //Toast.makeText(getApplicationContext(),list.get(0).getPickupPointName(),Toast.LENGTH_SHORT).show();
-                    PickupPointAdapter pickupPointAdapter=new PickupPointAdapter(list,getApplicationContext());
-                    LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
-
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    recyclerView.setAdapter(pickupPointAdapter);
+                    foo(response.body());
                 }
             }
 
@@ -70,9 +66,24 @@ public class PickupPoint extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), AddPickupPoint.class);
-                intent.putExtra("routeId2",routeId);
+                intent.putExtra("routeId",routeId);
+                intent.putExtra("operation","add");
                 startActivity(intent);
             }
         });
+    }
+
+    void foo(List<ModelPickupPoint> list){
+        PickupPointAdapter pickupPointAdapter=new PickupPointAdapter(list,this);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(pickupPointAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, Route.class));
     }
 }

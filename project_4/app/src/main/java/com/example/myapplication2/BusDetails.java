@@ -95,7 +95,8 @@ public class BusDetails extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"bus deleted successfully",Toast.LENGTH_SHORT).show();
+                            changeActivity();
                         }
                     }
 
@@ -106,6 +107,16 @@ public class BusDetails extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    void changeActivity(){
+        startActivity(new Intent(this, BusActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        changeActivity();
     }
 
     void setRouteName(int routeId){

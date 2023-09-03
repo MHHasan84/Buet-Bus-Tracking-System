@@ -81,4 +81,10 @@ public class Person extends AppCompatActivity {
         personRecyclerView.setLayoutManager(linearLayoutManager);
         personRecyclerView.setAdapter(personAdapter);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, AdminHomePage.class));
+    }
 }

@@ -79,6 +79,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteHolder> {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.isSuccessful()){
                             Toast.makeText(context.getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                            context.startActivity(new Intent(context.getApplicationContext(), Route.class));
                         }
                         else{
                             Toast.makeText(context.getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();

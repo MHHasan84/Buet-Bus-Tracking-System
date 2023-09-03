@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -60,6 +61,7 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
         personTypeSpn.setAdapter(ad);
 
         if(operation.equals("edit")){
+            addPersonTopTv.setText("Edit Person");
             personId=getIntent().getIntExtra("personId",1);
             //Toast.makeText(getApplicationContext(),busId+"",Toast.LENGTH_SHORT).show();
             methodForEdit(personId);
@@ -119,6 +121,14 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
                         }
                     });
                 }
+                changeActivity();
+            }
+        });
+
+        personCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeActivity();
             }
         });
     }
@@ -159,5 +169,15 @@ public class AddPerson extends AppCompatActivity implements AdapterView.OnItemSe
             }
         });
 
+    }
+
+    void changeActivity(){
+        startActivity(new Intent(this, Person.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        changeActivity();
     }
 }

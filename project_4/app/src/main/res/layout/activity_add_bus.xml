@@ -9,26 +9,22 @@
     android:gravity="center_horizontal">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add New Bus"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_marginVertical="10dp"
-        android:textColor="@color/buet"></TextView>
-
-    <ImageView
-        android:id="@+id/bus_logo"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:src="@drawable/bus2"
-        android:layout_centerHorizontal="true"></ImageView>
+        android:id="@+id/add_bus_top_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Add Bus"
+        android:textSize="30dp"
+        android:background="@color/buet"
+        android:textColor="@color/white"
+        android:gravity="center">
+    </TextView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="20dp"
         >
 
         <EditText
@@ -83,10 +79,11 @@
             android:id="@+id/add_bus_confirm_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add"
+            android:text="Confirm"
             android:layout_weight="1"
             android:layout_marginHorizontal="10dp"
-            android:backgroundTint="@color/buet"></Button>
+            android:backgroundTint="@color/buet"
+            android:textSize="20dp"></Button>
 
         <Button
             android:id="@+id/add_bus_cancel_btn"
@@ -95,7 +92,8 @@
             android:text="Cancel"
             android:layout_weight="1"
             android:layout_marginHorizontal="10dp"
-            android:backgroundTint="@color/buet"></Button>
+            android:backgroundTint="@color/buet"
+            android:textSize="20dp"></Button>
 
     </LinearLayout>
 

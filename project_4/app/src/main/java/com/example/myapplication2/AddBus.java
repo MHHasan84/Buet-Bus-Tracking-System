@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.Model.ModelBus;
@@ -37,6 +39,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
     Spinner helperSpn;
     Button addBusConfirmBtn;
     Button addBusCancelBtn;
+    TextView addBusTopTv;
 
     String[] busTypes={"student","teacher"};
     List<String> routeList=new ArrayList<>();
@@ -71,6 +74,8 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
 
         addBusConfirmBtn=findViewById(R.id.add_bus_confirm_btn);
         addBusCancelBtn=findViewById(R.id.add_bus_cancel_btn);
+
+        addBusTopTv=findViewById(R.id.add_bus_top_tv);
 
         busTypeSpn.setOnItemSelectedListener(this);
         routeSpn.setOnItemSelectedListener(this);
@@ -138,6 +143,7 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
         });
 
         if(operation.equals("edit")){
+            addBusTopTv.setText("Edit Bus");
             busId=getIntent().getIntExtra("busId",1);
             //Toast.makeText(getApplicationContext(),busId+"",Toast.LENGTH_SHORT).show();
             methodForEdit(busId);
@@ -160,10 +166,10 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
                         @Override
                         public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
                             if(response.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"bus added successfully",Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"bus not added successfully",Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -180,10 +186,10 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
                         @Override
                         public void onResponse(Call<ModelBus> call, Response<ModelBus> response) {
                             if(response.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"successfully",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"bus edited successfully",Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getApplicationContext(),"not successfully",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"bus not edited successfully",Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -194,8 +200,26 @@ public class AddBus extends AppCompatActivity implements AdapterView.OnItemSelec
                     });
                 }
 
+                changeActivity();
             }
         });
+
+        addBusCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeActivity();
+            }
+        });
+    }
+
+    void changeActivity(){
+        startActivity(new Intent(this, BusActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        changeActivity();
     }
 
     public void setModelRouteList(List<ModelRoute> modelRouteList) {
