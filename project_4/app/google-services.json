@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "980880369379",
+    "firebase_url": "https://bus-tracking-system-3a64a-default-rtdb.firebaseio.com",
+    "project_id": "bus-tracking-system-3a64a",
+    "storage_bucket": "bus-tracking-system-3a64a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980880369379:android:a95a8cd7b1425fc1c907d6",
+        "android_client_info": {
+          "package_name": "com.example.myapplication2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980880369379-v41dv7dnq3s8knh7814gm08n84iscvak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn6mZipkY8Py5NNRkxz7yDQ0Q3KgWPMzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980880369379-v41dv7dnq3s8knh7814gm08n84iscvak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
