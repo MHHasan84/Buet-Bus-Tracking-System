@@ -84,6 +84,26 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/road_start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:backgroundTint="@color/buet"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"></Button>
+
+    <Button
+        android:id="@+id/road_stop_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:backgroundTint="@color/buet"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"></Button>
+
+    <Button
         android:id="@+id/road_set_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

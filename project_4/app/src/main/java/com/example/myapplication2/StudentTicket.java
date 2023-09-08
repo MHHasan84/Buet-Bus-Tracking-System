@@ -109,41 +109,12 @@ public class StudentTicket extends Fragment {
         return view;
     }
 
-    public void generateQRCode(ModelTicket ticket){
-        WindowManager manager= (WindowManager) getContext().getSystemService(WINDOW_SERVICE);
-
-        // initializing a variable for default display.
-        Display display = manager.getDefaultDisplay();
-
-        // creating a variable for point which
-        // is to be displayed in QR Code.
-        Point point = new Point();
-        display.getSize(point);
-
-        // getting width and
-        // height of a point
-        int width = point.x;
-        int height = point.y;
-
-        // generating dimension from width and height.
-        int dimen = width < height ? width : height;
-        dimen = dimen * 3 / 4;
-
-        // setting this dimensions inside our qr code
-        // encoder to generate our qr code.
-        qrgEncoder = new QRGEncoder("hasan", null, QRGContents.Type.TEXT, dimen);
-        // getting our qrcode in the form of bitmap.
-        bitmap = qrgEncoder.getBitmap();
-        // the bitmap is set inside our image
-        // view using .setimagebitmap method.
-        ticketQRIv.setImageBitmap(bitmap);
-    }
 
 
     public void generateQRCode2(ModelTicket ticket){
         MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix=multiFormatWriter.encode("Mahmudul hasan", BarcodeFormat.QR_CODE,300,300);
+            BitMatrix bitMatrix=multiFormatWriter.encode(userName, BarcodeFormat.QR_CODE,300,300);
             BarcodeEncoder barcodeEncoder=new BarcodeEncoder();
             Bitmap bitmap1=barcodeEncoder.createBitmap(bitMatrix);
             ticketQRIv.setImageBitmap(bitmap1);

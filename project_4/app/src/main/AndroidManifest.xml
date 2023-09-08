@@ -8,8 +8,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -33,6 +32,14 @@
         android:theme="@style/Theme.MyApplication2"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".BusTrackService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".GPSTrackService"
+            android:exported="false" />
+
         <activity
             android:name=".DriverTicketActivity"
             android:exported="false" />

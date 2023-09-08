@@ -27,7 +27,19 @@ public class UserSignin extends AppCompatActivity {
         userSigninConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String userName=userSigninUsernameEt.getText().toString();
+                String password=userSigninPasswordEditText.getText().toString();
+
                 Intent intent=new Intent(getApplicationContext(), StudentMain.class);
+                intent.putExtra("username",userName);
+                startActivity(intent);
+            }
+        });
+
+        userSigninCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), DriverHomepageActivity.class);
                 intent.putExtra("username","hasan");
                 startActivity(intent);
             }

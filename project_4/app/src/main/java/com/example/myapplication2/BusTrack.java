@@ -34,6 +34,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
@@ -126,21 +127,31 @@ public class BusTrack extends Fragment {
 
         GeoPoint startPoint = new GeoPoint(23.72578763160967d, 90.39059429730275d);
         mapController.setCenter(startPoint);
+//
+//        GeoPoint gPt0 = new GeoPoint(23.72578763160967d, 90.39059429730275d);
+//        GeoPoint gPt1 = new GeoPoint(23.74578763160967d, 90.39259429730275d);
+//        ArrayList<GeoPoint> line=new ArrayList<>();
+//        line .add(gPt0);
+//        line .add(gPt1);
+//
+//        String userAgent = BuildConfig.APPLICATION_ID+"/"+BuildConfig.VERSION_NAME;
+//
+//        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
+//
+//        Road road = roadManager.getRoad(line);
+//        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+//
+//        map.getOverlays().add(roadOverlay);
 
-        GeoPoint gPt0 = new GeoPoint(23.72578763160967d, 90.39059429730275d);
-        GeoPoint gPt1 = new GeoPoint(23.74578763160967d, 90.39259429730275d);
-        ArrayList<GeoPoint> line=new ArrayList<>();
-        line .add(gPt0);
-        line .add(gPt1);
 
-        String userAgent = BuildConfig.APPLICATION_ID+"/"+BuildConfig.VERSION_NAME;
+        Marker startMarker = new Marker(map);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
-        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
+        startMarker.setIcon(getResources().getDrawable(R.drawable.location1));
+        startMarker.setTitle("Start point");
 
-        Road road = roadManager.getRoad(line);
-        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-
-        map.getOverlays().add(roadOverlay);
+        map.getOverlays().add(startMarker);
 
         map.invalidate();
 
@@ -221,11 +232,13 @@ public class BusTrack extends Fragment {
 
                     //Location2 location2=dataSnapshot.getValue(Location2.class);
                     //String latitude= String.valueOf(dataSnapshot.getValue(Location.class).getLatitude());
-                    Toast.makeText(getContext(),location.getLatitude()+"",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(),location.getLatitude()+"",Toast.LENGTH_SHORT).show();
                     i++;
                 }
 
-                drawInMap(geoPointList);
+                map.getOverlays().clear();
+
+                drawInMap2(geoPointList);
             }
 
             @Override
@@ -254,5 +267,26 @@ public class BusTrack extends Fragment {
 
         map.invalidate();
     }
+
+    private void drawInMap2(List<GeoPoint> geoPointList){
+        if(geoPointList.size()==0){
+            return;
+        }
+        GeoPoint startPoint=geoPointList.get(geoPointList.size()-1);
+        Marker startMarker = new Marker(map);
+        startMarker.setPosition(startPoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
+        startMarker.setIcon(getResources().getDrawable(R.drawable.location1));
+        startMarker.setTitle("Start point");
+        startMarker.setTextLabelFontSize(100);
+
+        map.getOverlays().add(startMarker);
+
+        map.invalidate();
+
+    }
+
+
 
 }

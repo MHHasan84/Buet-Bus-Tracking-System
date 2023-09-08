@@ -27,7 +27,7 @@ import java.util.List;
 public class DriverTrackActivity extends AppCompatActivity {
 
     private EditText fromLatEt,fromLonEt,toLatEt,toLonEt;
-    private Button roadSetBtn;
+    private Button roadSetBtn,roadStartBtn,roadStopBtn;
     private SeekBar roadSeekBar;
     private TextView showPosTv;
 
@@ -53,6 +53,8 @@ public class DriverTrackActivity extends AppCompatActivity {
         roadSetBtn=findViewById(R.id.road_set_btn);
         roadSeekBar=findViewById(R.id.road_seek_bar);
         showPosTv=findViewById(R.id.show_pos_tv);
+        roadStartBtn=findViewById(R.id.road_start_btn);
+        roadStopBtn=findViewById(R.id.road_stop_btn);
 
         roadSetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +75,20 @@ public class DriverTrackActivity extends AppCompatActivity {
                 List<GeoPoint> geoPointList=getAllPoint(fromPoint,toPoint);
 //
                 setSeekBar(geoPointList);
+            }
+        });
+
+        roadStartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        roadStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

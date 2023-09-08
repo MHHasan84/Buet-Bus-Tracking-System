@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,8 +26,18 @@ public class BuyTicket extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String userName;
+
+    private EditText numberOfTicketEt;
+    private Button buyTicketConfirmBtn;
+    private Button buyTicketCancelBtn;
+
     public BuyTicket() {
         // Required empty public constructor
+    }
+
+    public BuyTicket(String userName){
+        this.userName=userName;
     }
 
     /**
@@ -59,6 +71,18 @@ public class BuyTicket extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buy_ticket, container, false);
+        View view= inflater.inflate(R.layout.fragment_buy_ticket, container, false);
+        numberOfTicketEt=view.findViewById(R.id.number_of_tickets_et);
+        buyTicketConfirmBtn=view.findViewById(R.id.buy_ticket_confirm_btn);
+        buyTicketCancelBtn=view.findViewById(R.id.buy_ticket_cancel_btn);
+
+        buyTicketConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        return view;
     }
 }
