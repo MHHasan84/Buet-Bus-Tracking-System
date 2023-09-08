@@ -20,9 +20,10 @@
             android:layout_marginTop="20dp"></TextView>
 
         <ImageView
+            android:id="@+id/ticket_qr_iv"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:src="@drawable/qr"
+            android:background="@color/shadow"
             android:layout_gravity="center_horizontal"></ImageView>
 
         <com.google.android.material.card.MaterialCardView
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/buet"
             android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             >
 
             <LinearLayout
@@ -38,34 +39,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
-                android:paddingVertical="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Emran Mostofa"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"></TextView>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Student Id"
-                        android:textColor="@color/white"
-                        android:layout_marginRight="10dp"
-                        android:alpha="0.6"
-                        ></TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1505048"
-                        android:textColor="@color/white"
-                        android:alpha="0.6"></TextView>
-                </LinearLayout>
+                android:paddingVertical="10dp"
+                >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -79,6 +54,7 @@
                         android:layout_marginRight="20dp"
                         android:textSize="20dp"></TextView>
                     <TextView
+                        android:id="@+id/number_of_tickets_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="26"

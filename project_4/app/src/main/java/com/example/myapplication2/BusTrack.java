@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
@@ -13,17 +14,19 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.myapplication2.Model.Location;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.osmdroid.api.IMapController;
-import org.osmdroid.bonuspack.routing.GoogleRoadManager;
-import org.osmdroid.bonuspack.routing.GraphHopperRoadManager;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
@@ -31,16 +34,10 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,6 +60,9 @@ public class BusTrack extends Fragment {
 
     private static final String agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203";
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference rootReference;
+    DatabaseReference locationReference;
     public BusTrack() {
         // Required empty public constructor
     }
@@ -92,6 +92,7 @@ public class BusTrack extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -104,6 +105,10 @@ public class BusTrack extends Fragment {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        rootReference= firebaseDatabase.getReference();
+        locationReference=rootReference.child("location");
 
         map = (MapView) view.findViewById(R.id.bus_track_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -139,27 +144,7 @@ public class BusTrack extends Fragment {
 
         map.invalidate();
 
-//        List<Track> trackList=getAllTrack();
-//
-//        Track startTrack= trackList.get(0);
-//        GeoPoint startPoint=new GeoPoint(startTrack.getLatitude(),startTrack.getLongitude());
-//        mapController.setCenter(startPoint);
-//
-//        ArrayList<GeoPoint> line=new ArrayList<>();
-//        for(int i=1;i< trackList.size();i++){
-//            Track track=trackList.get(i);
-//            GeoPoint geoPoint=new GeoPoint(track.getLatitude(),track.getLongitude());
-//            line.add(geoPoint);
-//        }
-//
-//        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
-//
-//        Road road = roadManager.getRoad(line);
-//        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-//
-//        map.getOverlays().add(roadOverlay);
-//
-//        map.invalidate();
+        foo();
 
         return view;
     }
@@ -217,29 +202,57 @@ public class BusTrack extends Fragment {
         }
     }
 
-    private List<Track> getAllTrack(){
-        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
-        DataService dataService=retrofit.create(DataService.class);
 
-        Call<List<Track>> trackCall=dataService.getAllTrack();
-
-        final List<Track>[] trackList = new List[]{null};
-
-        trackCall.enqueue(new Callback<List<Track>>() {
+    private void foo(){
+        locationReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
-                if(response.isSuccessful()){
-                    trackList[0] =response.body();
-                    Toast.makeText(getContext(),"retrieve successfully",Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<GeoPoint> geoPointList=new ArrayList<>();
+                List<Location> locationList=new ArrayList<>();
+                int i=1;
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    // locationList.add(location);
+                    //geoPointList.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
+
+                    Location location=dataSnapshot.getValue(Location.class);
+
+                    geoPointList.add(new GeoPoint(location.getLatitude(),location.getLongitude()));
+
+
+                    //Location2 location2=dataSnapshot.getValue(Location2.class);
+                    //String latitude= String.valueOf(dataSnapshot.getValue(Location.class).getLatitude());
+                    Toast.makeText(getContext(),location.getLatitude()+"",Toast.LENGTH_SHORT).show();
+                    i++;
                 }
+
+                drawInMap(geoPointList);
             }
 
             @Override
-            public void onFailure(Call<List<Track>> call, Throwable t) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-        return trackList[0];
     }
+
+    private void drawInMap(List<GeoPoint> geoPointList){
+        IMapController mapController = map.getController();
+        mapController.setZoom(16.7);
+
+        mapController.setCenter(geoPointList.get(0));
+
+
+        RoadManager roadManager = new OSRMRoadManager(getContext(), "OBP_Tuto/1.0");
+
+        Road road = roadManager.getRoad((ArrayList<GeoPoint>) geoPointList);
+        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+
+        roadOverlay.setWidth(10.5F);
+        roadOverlay.setColor(R.color.buet);
+
+        map.getOverlays().add(roadOverlay);
+
+        map.invalidate();
+    }
+
 }

@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseDatabaseActivity extends AppCompatActivity {
-
     FirebaseDatabase firebaseDatabase;
     DatabaseReference rootReference;
     DatabaseReference studentReference;

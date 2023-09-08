@@ -1,13 +1,34 @@
 package com.example.myapplication2;
 
+import static android.content.Context.WINDOW_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.myapplication2.Model.ModelTicket;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,9 +45,20 @@ public class StudentTicket extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String userName;
+    private TextView numberOfTicketsTextView;
+    private Button button;
+    private ImageView ticketQRIv;
+
+    Bitmap bitmap;
+    QRGEncoder qrgEncoder;
 
     public StudentTicket() {
         // Required empty public constructor
+    }
+
+    public StudentTicket(String userName){
+        this.userName=userName;
     }
 
     /**
@@ -61,7 +93,11 @@ public class StudentTicket extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_student_ticket, container, false);
-        Button button=view.findViewById(R.id.buy_more_btn);
+        numberOfTicketsTextView=view.findViewById(R.id.number_of_tickets_tv);
+        button=view.findViewById(R.id.buy_more_btn);
+        ticketQRIv=view.findViewById(R.id.ticket_qr_iv);
+
+        generateQRCode2(null);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,5 +107,48 @@ public class StudentTicket extends Fragment {
         });
 
         return view;
+    }
+
+    public void generateQRCode(ModelTicket ticket){
+        WindowManager manager= (WindowManager) getContext().getSystemService(WINDOW_SERVICE);
+
+        // initializing a variable for default display.
+        Display display = manager.getDefaultDisplay();
+
+        // creating a variable for point which
+        // is to be displayed in QR Code.
+        Point point = new Point();
+        display.getSize(point);
+
+        // getting width and
+        // height of a point
+        int width = point.x;
+        int height = point.y;
+
+        // generating dimension from width and height.
+        int dimen = width < height ? width : height;
+        dimen = dimen * 3 / 4;
+
+        // setting this dimensions inside our qr code
+        // encoder to generate our qr code.
+        qrgEncoder = new QRGEncoder("hasan", null, QRGContents.Type.TEXT, dimen);
+        // getting our qrcode in the form of bitmap.
+        bitmap = qrgEncoder.getBitmap();
+        // the bitmap is set inside our image
+        // view using .setimagebitmap method.
+        ticketQRIv.setImageBitmap(bitmap);
+    }
+
+
+    public void generateQRCode2(ModelTicket ticket){
+        MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix=multiFormatWriter.encode("Mahmudul hasan", BarcodeFormat.QR_CODE,300,300);
+            BarcodeEncoder barcodeEncoder=new BarcodeEncoder();
+            Bitmap bitmap1=barcodeEncoder.createBitmap(bitMatrix);
+            ticketQRIv.setImageBitmap(bitmap1);
+        }catch (WriterException e){
+            throw new RuntimeException(e);
+        }
     }
 }

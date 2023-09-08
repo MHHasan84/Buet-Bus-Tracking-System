@@ -1,7 +1,11 @@
 package com.example.myapplication2;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,6 +87,10 @@ public class ContactFragment extends Fragment {
 
         contactRecycler.setLayoutManager(linearLayoutManager);
         contactRecycler.setAdapter(contactAdapter);
+
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CALL_PHONE},100);
+        }
 
         return view;
     }

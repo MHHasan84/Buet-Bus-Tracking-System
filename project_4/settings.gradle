@@ -14,6 +14,7 @@ dependencyResolutionManagement {
             url = "https://dl.bintray.com/maplibre/maplibre-gl-native"
             url "https://jitpack.io"
         }
+        jcenter()
     }
 }
 

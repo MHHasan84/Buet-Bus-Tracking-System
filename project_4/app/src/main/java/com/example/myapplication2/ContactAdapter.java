@@ -1,6 +1,8 @@
 package com.example.myapplication2;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactHolder> {
         holder.contactNumber.setText(contact.getNumber());
         holder.contactType.setText(contact.getType());
         holder.contactValue.setText(contact.getValue());
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:"+contact.getNumber()));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
