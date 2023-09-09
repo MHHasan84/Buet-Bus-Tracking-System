@@ -14,12 +14,19 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.myapplication2.Model.Location;
+import com.example.myapplication2.Model.ModelBus;
+import com.example.myapplication2.Network.RetrofitInstance;
+import com.example.myapplication2.Service.BusService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,12 +47,17 @@ import org.osmdroid.views.overlay.Polyline;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link BusTrack#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BusTrack extends Fragment {
+public class BusTrack extends Fragment implements AdapterView.OnItemSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,13 +71,25 @@ public class BusTrack extends Fragment {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
 
-    private static final String agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203";
-
+    private Spinner selectBusSpn;
+    private List<ModelBus> modelBusList=new ArrayList<>();
+    private List<String> busList=new ArrayList<>();
+    private ArrayAdapter busAdapter;
+    private Button busTrackBtn;
+    private String busNo="dhaka-1";
     FirebaseDatabase firebaseDatabase;
     DatabaseReference rootReference;
     DatabaseReference locationReference;
+    DatabaseReference busReference;
+    DatabaseReference locationReference2;
+    DatabaseReference busReference2;
     public BusTrack() {
         // Required empty public constructor
+    }
+
+    public BusTrack(String busNo){
+        this.busNo=busNo;
+        Toast.makeText(getContext(),busNo,Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -107,9 +131,19 @@ public class BusTrack extends Fragment {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        rootReference= firebaseDatabase.getReference();
-        locationReference=rootReference.child("location");
+        selectBusSpn=view.findViewById(R.id.select_bus_spn);
+        busTrackBtn=view.findViewById(R.id.bus_track_btn);
+
+        selectBusSpn.setOnItemSelectedListener(this);
+
+        setBusSpinner();
+
+        busTrackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.rel1, new BusTrack(busNo)).commit();
+            }
+        });
 
         map = (MapView) view.findViewById(R.id.bus_track_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -121,6 +155,13 @@ public class BusTrack extends Fragment {
 
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         IMapController mapController = map.getController();
         mapController.setZoom(16.7);
@@ -154,6 +195,23 @@ public class BusTrack extends Fragment {
         map.getOverlays().add(startMarker);
 
         map.invalidate();
+
+//        if(locationReference!=null){
+//            Toast.makeText(getContext(),"start foo",Toast.LENGTH_SHORT).show();
+//            foo();
+//        }
+
+//        firebaseDatabase=FirebaseDatabase.getInstance();
+//        rootReference=firebaseDatabase.getReference();
+//        busReference=rootReference.child("dhaka-1");
+//        locationReference=busReference.child("location");
+
+        //foo();
+
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        rootReference=firebaseDatabase.getReference();
+        busReference=rootReference.child("dhaka-8");
+        locationReference=busReference.child("location");
 
         foo();
 
@@ -288,5 +346,52 @@ public class BusTrack extends Fragment {
     }
 
 
+    public void setBusSpinner(){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        BusService busService=retrofit.create(BusService.class);
+
+        Call<List<ModelBus>> call= busService.getAllBus();
+
+        call.enqueue(new Callback<List<ModelBus>>() {
+            @Override
+            public void onResponse(Call<List<ModelBus>> call, Response<List<ModelBus>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(),"successfully",Toast.LENGTH_SHORT).show();
+                    setBusList(response.body());
+                }
+                else{
+                    Toast.makeText(getContext(),"not successfully",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ModelBus>> call, Throwable t) {
+                Toast.makeText(getContext(),"failed",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    public void setBusList(List<ModelBus> modelBusList){
+        this.modelBusList.addAll(modelBusList);
+        for(ModelBus modelBus:modelBusList){
+            this.busList.add(modelBus.getBusNumber());
+            Toast.makeText(getContext(),modelBus.getBusNumber(),Toast.LENGTH_SHORT);
+        }
+        busAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, this.busList);
+        busAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectBusSpn.setAdapter(busAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        this.busNo= busList.get(i);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 
 }

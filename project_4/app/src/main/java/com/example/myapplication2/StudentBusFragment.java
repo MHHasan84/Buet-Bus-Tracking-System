@@ -1,22 +1,19 @@
 package com.example.myapplication2;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.myapplication2.Model.ModelBusPerson;
+import com.example.myapplication2.Model.ModelBus;
 import com.example.myapplication2.Network.RetrofitInstance;
-import com.example.myapplication2.Service.BusPersonService;
+import com.example.myapplication2.Service.BusService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +25,10 @@ import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ContactFragment#newInstance} factory method to
+ * Use the {@link StudentBusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ContactFragment extends Fragment {
+public class StudentBusFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,9 +39,9 @@ public class ContactFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private RecyclerView contactRecycler;
+    private RecyclerView recyclerView;
 
-    public ContactFragment() {
+    public StudentBusFragment() {
         // Required empty public constructor
     }
 
@@ -54,11 +51,11 @@ public class ContactFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ContactFragment.
+     * @return A new instance of fragment StudentBusFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ContactFragment newInstance(String param1, String param2) {
-        ContactFragment fragment = new ContactFragment();
+    public static StudentBusFragment newInstance(String param1, String param2) {
+        StudentBusFragment fragment = new StudentBusFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,36 +76,44 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_contact, container, false);
-        contactRecycler=view.findViewById(R.id.contact_recycler);
+        View view= inflater.inflate(R.layout.fragment_student_bus, container, false);
+
+        recyclerView=view.findViewById(R.id.std_busRecyclerView);
 
         Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
-        BusPersonService busPersonService=retrofit.create(BusPersonService.class);
+        BusService busService=retrofit.create(BusService.class);
 
-        Call<List<ModelBusPerson>> call= busPersonService.getAllPerson();
-
-        call.enqueue(new Callback<List<ModelBusPerson>>() {
+        List<ModelBus> modelBusList=new ArrayList<>();
+        Call<List<ModelBus>> call= busService.getAllBus();
+        call.enqueue(new Callback<List<ModelBus>>() {
             @Override
-            public void onResponse(Call<List<ModelBusPerson>> call, Response<List<ModelBusPerson>> response) {
+            public void onResponse(Call<List<ModelBus>> call, Response<List<ModelBus>> response) {
                 if(response.isSuccessful()){
-                    LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
-                    ContactAdapter contactAdapter=new ContactAdapter(getContext(),response.body());
+                    modelBusList.addAll(response.body());
 
-                    contactRecycler.setLayoutManager(linearLayoutManager);
-                    contactRecycler.setAdapter(contactAdapter);
+                    foo(modelBusList);
+
+                }
+                else{
+                    Toast.makeText(getContext(),"not successfully",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ModelBusPerson>> call, Throwable t) {
-
+            public void onFailure(Call<List<ModelBus>> call, Throwable t) {
+                Toast.makeText(getContext(),"failed",Toast.LENGTH_SHORT).show();
             }
         });
 
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CALL_PHONE},100);
-        }
         return view;
     }
 
+
+    void foo(List<ModelBus> modelBusList){
+        StudentBusViewAdapter busViewAdapter=new StudentBusViewAdapter(modelBusList,getContext(),getFragmentManager());
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),2);
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(busViewAdapter);
+    }
 }

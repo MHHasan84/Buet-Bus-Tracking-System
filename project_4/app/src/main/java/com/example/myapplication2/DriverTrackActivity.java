@@ -30,9 +30,11 @@ public class DriverTrackActivity extends AppCompatActivity {
     private Button roadSetBtn,roadStartBtn,roadStopBtn;
     private SeekBar roadSeekBar;
     private TextView showPosTv;
+    private String busNo;
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference rootReference;
+    DatabaseReference busReference;
     DatabaseReference locationReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,12 @@ public class DriverTrackActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        busNo=getIntent().getStringExtra("busNo");
+
         firebaseDatabase=FirebaseDatabase.getInstance();
         rootReference=firebaseDatabase.getReference();
-        locationReference=rootReference.child("location");
+        busReference=rootReference.child(busNo);
+        locationReference=busReference.child("location");
 
         fromLatEt=findViewById(R.id.from_lat_et);
         fromLonEt=findViewById(R.id.from_lon_et);
@@ -55,6 +60,7 @@ public class DriverTrackActivity extends AppCompatActivity {
         showPosTv=findViewById(R.id.show_pos_tv);
         roadStartBtn=findViewById(R.id.road_start_btn);
         roadStopBtn=findViewById(R.id.road_stop_btn);
+
 
         roadSetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +87,19 @@ public class DriverTrackActivity extends AppCompatActivity {
         roadStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                double fromLat=23.782668;
+                double fromLon=90.398880;
+                double toLat=23.812500;
+                double toLon=90.405301;
 
+                GeoPoint fromPoint=new GeoPoint(fromLat,fromLon);
+                GeoPoint toPoint=new GeoPoint(toLat,toLon);
+
+                List<GeoPoint> geoPointList=getAllPoint(fromPoint,toPoint);
+
+                BusRunThread busRunThread=new BusRunThread(geoPointList,"dhaka-8");
+
+                busRunThread.start();
             }
         });
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:backgroundTint="@color/shadow"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/student_pickup_point_name_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="pickup_point_1_1"
+            android:textColor="@color/buet"
+            android:textSize="20dp"
+            android:layout_weight="5">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/student_pickup_point_time_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="09:00"
+            android:textColor="@color/buet"
+            android:textSize="20dp"
+            android:layout_weight="1">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

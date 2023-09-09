@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="buet">#982A2D</color>
     <color name="shadow">#EAE4E3</color>
+    <color name="deep_shadow">#F5ACAC</color>
 </resources>

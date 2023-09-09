@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:backgroundTint="@color/shadow"
     android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="3dp">
+    android:layout_marginVertical="3dp"
+    android:id="@+id/nf_cv">
 
     <LinearLayout
         android:layout_width="match_parent"

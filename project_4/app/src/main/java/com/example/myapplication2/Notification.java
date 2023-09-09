@@ -9,9 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.example.myapplication2.Model.ModelNotification;
+import com.example.myapplication2.Network.RetrofitInstance;
+import com.example.myapplication2.Service.NotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +41,14 @@ public class Notification extends Fragment {
 
     private RecyclerView nfRecycler;
 
+    private String studentId;
+
     public Notification() {
         // Required empty public constructor
+    }
+
+    public Notification(String studentId){
+        this.studentId=studentId;
     }
 
     /**
@@ -69,29 +85,34 @@ public class Notification extends Fragment {
         View view=inflater.inflate(R.layout.fragment_notification, container, false);
         nfRecycler=view.findViewById(R.id.nf_recycler);
 
-        List<NotificationModel> notificationModels=getData();
-
-        NotificationAdapter notificationAdapter=new NotificationAdapter(notificationModels,getContext());
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-
-        nfRecycler.setLayoutManager(linearLayoutManager);
-        nfRecycler.setAdapter(notificationAdapter);
+        setNotificationList();
 
         return view;
     }
 
-    private List<NotificationModel> getData(){
-        List<NotificationModel> notificationModels=new ArrayList<>();
-        notificationModels.add(new NotificationModel("25 july Sunday","6:15 AM","All transportation service are called off\n" +
-                "due to Eid ul Adha"));
-        notificationModels.add(new NotificationModel("25 july Sunday","6:15 AM","All transportation service are called off\n" +
-                "due to Eid ul Adha"));
-        notificationModels.add(new NotificationModel("25 july Sunday","6:15 AM","All transportation service are called off\n" +
-                "due to Eid ul Adha"));
-        notificationModels.add(new NotificationModel("25 july Sunday","6:15 AM","All transportation service are called off\n" +
-                "due to Eid ul Adha"));
-        notificationModels.add(new NotificationModel("25 july Sunday","6:15 AM","All transportation service are called off\n" +
-                "due to Eid ul Adha"));
-        return notificationModels;
+    public void setNotificationList(){
+        Retrofit retrofit= RetrofitInstance.getRetrofitInstance();
+        NotificationService notificationService=retrofit.create(NotificationService.class);
+
+        Call<List<ModelNotification>> call=notificationService.getNotification(studentId);
+
+        call.enqueue(new Callback<List<ModelNotification>>() {
+            @Override
+            public void onResponse(Call<List<ModelNotification>> call, Response<List<ModelNotification>> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "successfully", Toast.LENGTH_SHORT).show();
+                    NotificationAdapter notificationAdapter=new NotificationAdapter(response.body(),getContext());
+                    LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+
+                    nfRecycler.setLayoutManager(linearLayoutManager);
+                    nfRecycler.setAdapter(notificationAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ModelNotification>> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -7,21 +7,72 @@
     tools:context=".DriverTicketActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="messageContent"/>
-
     <Button
         android:id="@+id/scan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="scan">
+        android:text="Scan Ticket"
+        android:backgroundTint="@color/buet"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp">
     </Button>
 
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/shadow"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available Number of Tickets"
+                android:textColor="@color/buet"
+                android:layout_marginRight="20dp"
+                android:textSize="20dp"></TextView>
+            <TextView
+                android:id="@+id/ticket_available_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26"
+                android:textSize="30dp"/>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="No of Tickets"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/number_of_tickets_extract_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/ticket_extract_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Extract"
+        android:backgroundTint="@color/buet"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp">
+    </Button>
 
 
 </LinearLayout>

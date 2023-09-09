@@ -10,8 +10,9 @@ import android.view.View;
 import com.google.android.material.card.MaterialCardView;
 
 public class DriverHomepageActivity extends AppCompatActivity {
-    CardView trackCv;
-    CardView ticketCv;
+    private CardView trackCv;
+    private CardView ticketCv;
+    private String busNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +21,13 @@ public class DriverHomepageActivity extends AppCompatActivity {
         trackCv=findViewById(R.id.track_cv);
         ticketCv=findViewById(R.id.ticket_cv);
 
+        busNo=getIntent().getStringExtra("busNo");
+
         trackCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(new Intent(getApplicationContext(),DriverTrackActivity.class));
+                intent.putExtra("busNo",busNo);
                 startActivity(intent);
             }
         });

@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication2.Model.ModelBusPerson;
+
 import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactHolder> {
     private Context context;
-    private List<Contact> contactList;
+    private List<ModelBusPerson> contactList;
 
-    public ContactAdapter(Context context, List<Contact> contactList) {
+    public ContactAdapter(Context context, List<ModelBusPerson> contactList) {
         this.context = context;
         this.contactList = contactList;
     }
@@ -30,17 +32,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ContactHolder holder, int position) {
-        Contact contact=contactList.get(position);
+        ModelBusPerson contact=contactList.get(position);
         holder.contactName.setText(contact.getName());
-        holder.contactNumber.setText(contact.getNumber());
-        holder.contactType.setText(contact.getType());
-        holder.contactValue.setText(contact.getValue());
+        holder.contactNumber.setText(contact.getContactNumber());
+        holder.contactType.setText(contact.getBusPersonType());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:"+contact.getNumber()));
+                intent.setData(Uri.parse("tel:"+contact.getContactNumber()));
                 context.startActivity(intent);
             }
         });

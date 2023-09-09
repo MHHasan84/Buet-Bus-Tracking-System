@@ -10,7 +10,7 @@ public class ContactHolder extends RecyclerView.ViewHolder {
     protected TextView contactName;
     protected TextView contactNumber;
     protected TextView contactType;
-    protected TextView contactValue;
+
     protected View view;
 
     public ContactHolder(@NonNull View itemView) {
@@ -19,7 +19,6 @@ public class ContactHolder extends RecyclerView.ViewHolder {
         contactName=itemView.findViewById(R.id.contact_name);
         contactNumber=itemView.findViewById(R.id.contact_number);
         contactType=itemView.findViewById(R.id.contact_type);
-        contactValue=itemView.findViewById(R.id.contact_value);
         view=itemView;
     }
 }

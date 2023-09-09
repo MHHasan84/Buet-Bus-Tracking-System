@@ -11,12 +11,12 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface TicketService {
-    @GET("/ticket/{user_name}")
-    Call<ModelTicket> getTicket(@Path("user_name") String userName);
+    @GET("/ticket/{ticketId}")
+    Call<ModelTicket> getTicket(@Path("ticketId") String ticketId);
     @POST("/ticket")
     Call<ModelTicket> addTicket(@Body ModelTicket ticket);
-    @PUT("/ticket/{user_name}")
-    Call<ModelTicket> editTicket(@Body ModelTicket ticket,@Path("user_name") String userName);
-    @DELETE("/ticket/{user_name}")
-    Call<Void> deleteTicket(@Path("user_name") String userName);
+    @PUT("/ticket/{ticketId}")
+    Call<ModelTicket> editTicket(@Body ModelTicket ticket,@Path("ticketId") String ticketId);
+    @DELETE("/ticket/{ticketId}")
+    Call<Void> deleteTicket(@Path("ticketId") String ticketId);
 }

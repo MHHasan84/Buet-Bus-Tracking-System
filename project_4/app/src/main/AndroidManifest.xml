@@ -32,10 +32,20 @@
         android:theme="@style/Theme.MyApplication2"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".AdminSigninActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DriverSigninActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StudentSigninActivity"
+            android:exported="false" />
+
         <service
             android:name=".BusTrackService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".GPSTrackService"
             android:exported="false" />

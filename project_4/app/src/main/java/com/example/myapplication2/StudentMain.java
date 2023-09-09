@@ -12,8 +12,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class StudentMain extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottomNavigationView;
-    private Fragment home,notification,track,profile,contact,previous,current,ticket;
-    private String userName;
+    private Fragment bus,home,notification,track,profile,contact,previous,current,ticket;
+    private String studentId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,25 +21,25 @@ public class StudentMain extends AppCompatActivity implements BottomNavigationVi
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        userName=getIntent().getStringExtra("username");
+        studentId=getIntent().getStringExtra("studentId");
 
         home=new StudentHome();
-        notification=new Notification();
+        bus=new StudentBusFragment();
+        notification=new Notification(studentId);
         track=new BusTrack();
         profile=new StudentProfile();
         contact=new ContactFragment();
-        ticket=new StudentTicket(userName);
+        ticket=new StudentTicket(studentId);
 
-        current=home;
 
-        loadFragment(current);
+        loadFragment(bus);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.menu_home){
             current=home;
-            loadFragment(home);
+            loadFragment(bus);
             return true;
         }
         if(item.getItemId()==R.id.notification){

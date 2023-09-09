@@ -22,49 +22,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, UserSignin.class));
+        Button adminButton=(Button) findViewById(R.id.adminbtn);
+        Button userButton=findViewById(R.id.userbtn);
+        Button driverButton=findViewById(R.id.driverbtn);
 
-//        Button adminButton=(Button) findViewById(R.id.adminbtn);
-//        Button userButton=findViewById(R.id.userbtn);
-//        Button driverButton=findViewById(R.id.driverbtn);
-//        TextView createAccountTv=findViewById(R.id.create_account_tv);
-//
-//        TextView err=findViewById(R.id.errTv);
-//
-//        System.out.println("Hasan");
-//
-//        driverButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(MainActivity.this, DriverTrackActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        userButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent intent=new Intent(MainActivity.this, UserWelcomeScreen.class);
-//                Intent intent=new Intent(MainActivity.this, StudentMain.class);
-//                startActivity(intent);
-//            }
-//        });
-//        Retrofit retrofit=RetrofitClientInstance.getRetrofitInstance();
-//        DataService dataService=retrofit.create(DataService.class);
-//        adminButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(MainActivity.this,AdminLogin.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        createAccountTv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(MainActivity.this,UserSignUp.class);
-//                startActivity(intent);
-//            }
-//        });
+
+        driverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this, DriverSigninActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent=new Intent(MainActivity.this, UserWelcomeScreen.class);
+                Intent intent=new Intent(MainActivity.this, StudentSigninActivity.class);
+                startActivity(intent);
+            }
+        });
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this, AdminSigninActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

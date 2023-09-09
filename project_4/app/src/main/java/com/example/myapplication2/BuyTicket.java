@@ -9,6 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.myapplication2.Model.ModelTicket;
+import com.example.myapplication2.Network.RetrofitInstance;
+import com.example.myapplication2.Service.TicketService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,13 +41,15 @@ public class BuyTicket extends Fragment {
     private EditText numberOfTicketEt;
     private Button buyTicketConfirmBtn;
     private Button buyTicketCancelBtn;
+    private int amount;
 
     public BuyTicket() {
         // Required empty public constructor
     }
 
-    public BuyTicket(String userName){
+    public BuyTicket(String userName,int amount){
         this.userName=userName;
+        this.amount=amount;
     }
 
     /**
@@ -77,6 +89,30 @@ public class BuyTicket extends Fragment {
         buyTicketCancelBtn=view.findViewById(R.id.buy_ticket_cancel_btn);
 
         buyTicketConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int numberOfTickets=Integer.parseInt(numberOfTicketEt.getText().toString())+amount;
+                ModelTicket modelTicket=new ModelTicket(userName,numberOfTickets,true);
+                Retrofit retrofit=RetrofitInstance.getRetrofitInstance();
+                TicketService ticketService=retrofit.create(TicketService.class);
+                Call<ModelTicket> call=ticketService.editTicket(modelTicket,userName);
+                call.enqueue(new Callback<ModelTicket>() {
+                    @Override
+                    public void onResponse(Call<ModelTicket> call, Response<ModelTicket> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(getContext(),"ticket created successfully",Toast.LENGTH_SHORT);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ModelTicket> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        buyTicketCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

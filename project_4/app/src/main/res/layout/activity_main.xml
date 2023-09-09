@@ -22,7 +22,7 @@
         android:id="@+id/userbtn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="User"
+        android:text="Student"
         android:backgroundTint="@color/buet"
         android:textSize="25dp"
         android:paddingVertical="10dp"
@@ -37,21 +37,5 @@
         android:textSize="25dp"
         android:paddingVertical="10dp"></Button>
 
-    <TextView
-        android:id="@+id/create_account_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="create new account"
-        android:textSize="20dp"
-        android:textColor="@color/buet">
-    </TextView>
-
-    <TextView
-        android:id="@+id/errTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="error"
-        android:textSize="20dp">
-    </TextView>
 
 </LinearLayout>
